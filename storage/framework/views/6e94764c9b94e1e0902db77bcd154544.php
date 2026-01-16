@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Accueil'); ?>
 
-@section('title', 'Accueil')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -43,7 +41,7 @@
                 </div>
 
                 <div class="cta-buttons">
-                    <a href="{{ route('qui-sommes-nous') }}" class="btn btn-primary">En savoir plus</a>
+                    <a href="<?php echo e(route('qui-sommes-nous')); ?>" class="btn btn-primary">En savoir plus</a>
                 </div>
             </div>
         </section>
@@ -78,7 +76,7 @@
                 </div>
 
                 <div class="cta-buttons">
-                    <a href="{{ route('adherer') }}" class="btn btn-primary">Adhérer maintenant</a>
+                    <a href="<?php echo e(route('adherer')); ?>" class="btn btn-primary">Adhérer maintenant</a>
                     <a href="#" class="btn btn-secondary" download>📄 Bulletin d'adhésion</a>
                 </div>
             </div>
@@ -116,7 +114,7 @@
                 <p class="highlight-text">⏰ Même quelques heures par mois peuvent faire la différence !</p>
 
                 <div class="cta-buttons">
-                    <a href="{{ route('benevole') }}" class="btn btn-primary">Découvrir les opportunités</a>
+                    <a href="<?php echo e(route('benevole')); ?>" class="btn btn-primary">Découvrir les opportunités</a>
                 </div>
             </div>
         </section>
@@ -149,7 +147,7 @@
                 </div>
 
                 <div class="cta-buttons">
-                    <a href="{{ route('contact') }}" class="btn btn-primary">Formulaire de contact</a>
+                    <a href="<?php echo e(route('contact')); ?>" class="btn btn-primary">Formulaire de contact</a>
                 </div>
             </div>
         </section>
@@ -179,7 +177,7 @@
                         </div>
                     </div>
                     <div class="cta-buttons">
-                        <a href="{{ route('administratif') }}" class="btn btn-admin">
+                        <a href="<?php echo e(route('administratif')); ?>" class="btn btn-admin">
                             <span>📂</span> Accéder à l'espace administratif
                         </a>
                     </div>
@@ -210,4 +208,6 @@
         </section>
 
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\apeeac14\apeeac-main\resources\views/pages/apeeac.blade.php ENDPATH**/ ?>

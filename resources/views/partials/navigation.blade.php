@@ -11,10 +11,11 @@
             <li>
     <a href="{{ route('apeeac') }}" class="{{ Request::routeIs('apeeac') ? 'active' : '' }}">APEEAC</a>
     <div class="dropdown-content">
-        <a href="{{ route('apeeac') }}#qui-sommes-nous">Qui sommes-nous ?</a>
-        <a href="{{ route('apeeac') }}#adherer">Adhérer</a>
-        <a href="{{ route('apeeac') }}#contacter">Contacter</a>
-        <a href="{{ route('apeeac') }}#benevole">Bénévole : S'impliquer</a>
+        <a href="{{ route('qui-sommes-nous') }}#qui-sommes-nous">Qui sommes-nous ?</a>
+        <a href="{{ route('adherer') }}#adherer">Adhérer</a>
+        <a href="{{ route('contact') }}#contacter">Contacter</a>
+        <a href="{{ route('benevole') }}#benevole">Bénévole : S'impliquer</a>
+        <a href="{{ route('administratif') }}#administratif">Administratif</a>
     </div>
 </li>
             
@@ -45,13 +46,7 @@
             <li><a href="{{ route('vulgarisation') }}" class="{{ Request::routeIs('vulgarisation') ? 'active' : '' }}">Vulgarisation</a></li>
             <li><a href="{{ route('trucs-astuces') }}" class="{{ Request::routeIs('trucs-astuces') ? 'active' : '' }}">Trucs et astuces</a></li>
             
-            <li>
-                <a href="{{ route('administratif') }}" class="{{ Request::routeIs('administratif') ? 'active' : '' }}">Administratif</a>
-                <div class="dropdown-content">
-                    <a href="{{ route('administratif') }}#comptes-rendus">Comptes-rendus</a>
-                    <a href="{{ route('administratif') }}#pv">Procès-verbaux</a>
-                </div>
-            </li>
+           
         </ul>
     </div>
 </nav>
