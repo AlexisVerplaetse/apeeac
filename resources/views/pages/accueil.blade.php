@@ -5,7 +5,6 @@
 @section('content') <!-- Contenu spécifique -->
 
 
-
     <!-- Hero Section -->
     <section class="hero">
         <h1>Association des Parents d'Élèves du Conservatoire</h1>

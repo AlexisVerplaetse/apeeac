@@ -45,3 +45,19 @@ Route::get('/trucs-astuces', function () {
 Route::get('/administratif', function () {
     return view('pages.administratif');
 })->name('administratif');
+
+// Pages de connexion 
+use App\Http\Controllers\AuthController;
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Pages protégées 
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('pages.dashboard');
+    })->name('dashboard');
+});
