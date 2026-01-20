@@ -1,8 +1,8 @@
-@extends('layouts.app') <!-- On utilise le layout -->
+ <!-- On utilise le layout -->
 
-@section('title', 'Accueil') <!-- Titre spécifique -->
+<?php $__env->startSection('title', 'Accueil'); ?> <!-- Titre spécifique -->
 
-@section('content') <!-- Contenu spécifique -->
+<?php $__env->startSection('content'); ?> <!-- Contenu spécifique -->
 
 
 
@@ -167,4 +167,5 @@
     </script>
 </body>
 </html>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\apeeac14\apeeac-main\resources\views/pages/actualites.blade.php ENDPATH**/ ?>

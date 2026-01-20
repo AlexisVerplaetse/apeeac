@@ -18,6 +18,37 @@ Route::get('/apeeac', function () {
     return view('pages.apeeac');
 })->name('apeeac');
 
+// Nouvelles routes
+Route::get('/qui-sommes-nous', function () {
+    return view('pages.qui-sommes-nous');
+})->name('qui-sommes-nous');
+
+Route::get('/adherer', function () {
+    return view('pages.adherer');
+})->name('adherer');
+
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
+// Traitement du formulaire de contact
+Route::post('/contact', function () {
+    // Logique de traitement du formulaire à implémenter
+    // Validation des données
+    // Envoi d'email
+    // Redirection avec message de succès
+    return redirect()->route('contact')->with('success', 'Votre message a bien été envoyé !');
+})->name('contact.send');
+
+Route::get('/benevole', function () {
+    return view('pages.benevole');
+})->name('benevole');
+
+Route::get('/administratif', function () {
+    return view('pages.administratif');
+})->name('administratif');
+
+// Routes existantes
 Route::get('/assurance', function () {
     return view('pages.assurance');
 })->name('assurance');
@@ -41,23 +72,3 @@ Route::get('/vulgarisation', function () {
 Route::get('/trucs-astuces', function () {
     return view('pages.trucs-astuces');
 })->name('trucs-astuces');
-
-Route::get('/administratif', function () {
-    return view('pages.administratif');
-})->name('administratif');
-
-// Pages de connexion 
-use App\Http\Controllers\AuthController;
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Pages protégées 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.dashboard');
-    })->name('dashboard');
-});
