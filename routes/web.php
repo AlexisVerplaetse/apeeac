@@ -65,6 +65,18 @@ Route::get('/petites-annonces', function () {
     return view('pages.petites-annonces');
 })->name('petites-annonces');
 
+Route::get('/petites-annonces/vente', function () {
+    return view('pages.petites-annonces-vente');
+})->name('petites-annonces.vente');
+
+Route::get('/petites-annonces/recherche', function () {
+    return view('pages.petites-annonces-recherche');
+})->name('petites-annonces.recherche');
+
+Route::get('/petites-annonces/covoiturage', function () {
+    return view('pages.petites-annonces-covoiturage');
+})->name('petites-annonces.covoiturage');
+
 Route::get('/vulgarisation', function () {
     return view('pages.vulgarisation');
 })->name('vulgarisation');
