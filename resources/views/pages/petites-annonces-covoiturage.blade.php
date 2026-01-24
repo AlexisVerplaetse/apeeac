@@ -20,9 +20,9 @@
 
         <!-- Bouton proposer un trajet -->
         <section class="deposit-section">
-            <button class="btn btn-deposit">
+            <a href="{{ route('petites-annonces.covoiturage.create') }}" class="btn btn-deposit">
                 <span>➕</span> Proposer un trajet
-            </button>
+            </a>
         </section>
 
         <!-- Liste des covoiturages -->

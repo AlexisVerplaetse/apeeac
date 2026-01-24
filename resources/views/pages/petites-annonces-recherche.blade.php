@@ -20,9 +20,9 @@
 
         <!-- Bouton déposer une demande -->
         <section class="deposit-section">
-            <button class="btn btn-deposit">
+            <a href="{{ route('petites-annonces.recherche.create') }}" class="btn btn-deposit">
                 <span>➕</span> Déposer une demande
-            </button>
+            </a>
         </section>
 
         <!-- Liste des demandes -->

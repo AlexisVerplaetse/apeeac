@@ -20,9 +20,9 @@
 
         <!-- Bouton déposer une annonce -->
         <section class="deposit-section">
-            <button class="btn btn-deposit">
+            <a href="{{ route('petites-annonces.vente.create') }}" class="btn btn-deposit">
                 <span>➕</span> Déposer une annonce
-            </button>
+            </a>
         </section>
 
         <!-- Liste des annonces -->
