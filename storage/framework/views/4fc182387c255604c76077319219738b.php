@@ -37,9 +37,9 @@
             <li>
                 <a href="<?php echo e(route('petites-annonces')); ?>" class="<?php echo e(Request::routeIs('petites-annonces') ? 'active' : ''); ?>">Petites annonces</a>
                 <div class="dropdown-content">
-                    <a href="<?php echo e(route('petites-annonces')); ?>#covoiturage">Covoiturage</a>
-                    <a href="<?php echo e(route('petites-annonces')); ?>#vente">Vente d'instrument</a>
-                    <a href="<?php echo e(route('petites-annonces')); ?>#recherche">Recherche de musiciens</a>
+                    <a href="<?php echo e(route('petites-annonces')); ?>/covoiturage">Covoiturage</a>
+                    <a href="<?php echo e(route('petites-annonces')); ?>/vente">Vente d'instrument</a>
+                    <a href="<?php echo e(route('petites-annonces')); ?>/recherche">Recherche de musiciens</a>
                 </div>
             </li>
             

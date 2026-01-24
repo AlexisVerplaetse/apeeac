@@ -29,9 +29,9 @@
                 <h3>📍 Adresse postale</h3>
                 <p>
                     APEEAC<br>
-                    Conservatoire Municipal<br>
-                    123 rue de la Musique<br>
-                    75000 Paris
+                    Conservatoire Eugène Bozza<br>
+                    Place Verte<br>
+                    59300 Valenciennes
                 </p>
             </div>
 
@@ -134,23 +134,31 @@
         <div class="social-links">
             <a href="#" class="social-btn">Facebook</a>
             <a href="#" class="social-btn">Instagram</a>
-            <a href="#" class="social-btn">Twitter</a>
         </div>
         <p>Restez informés de toutes nos actualités sur les réseaux sociaux !</p>
     </section>
 
     <section class="content-box map-section">
         <h2>Plan d'accès</h2>
-        <p>Le conservatoire est accessible en transport en commun :</p>
+        <p>Le Conservatoire Eugène Bozza de Valenciennes est accessible en transport en commun :</p>
         <ul>
-            <li>🚇 Métro : Ligne 1, station République (5 min à pied)</li>
-            <li>🚌 Bus : Lignes 20, 65, 75 - Arrêt Conservatoire</li>
-            <li>🚲 Vélib' : Station à 100m</li>
-            <li>🅿️ Parking public rue de la Musique</li>
+            <li>🚇 Tramway : Ligne T1, station Place Verte (à proximité immédiate)</li>
+            <li>🚌 Bus : Lignes 1, 2, 3, 4 - Arrêt Place Verte</li>
+            <li>🚲 Stations de vélos en libre-service à proximité</li>
+            <li>🅿️ Parking public Place Verte</li>
         </ul>
-        <!-- Vous pouvez intégrer ici Google Maps ou OpenStreetMap -->
-        <div class="map-placeholder">
-            <p>[Carte interactive à intégrer]</p>
+        
+        <div class="map-container" style="margin-top: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5090.712450612!2d3.5162470770080274!3d50.359911771575185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2edc6fccb7f6d%3A0xc466206103618078!2sConservatoire%20Eug%C3%A8ne%20Bozza%2C%20De%20Valenciennes!5e0!3m2!1sfr!2sfr!4v1768929692459!5m2!1sfr!2sfr" 
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Plan d'accès au Conservatoire Eugène Bozza de Valenciennes">
+            </iframe>
         </div>
     </section>
 </div>
