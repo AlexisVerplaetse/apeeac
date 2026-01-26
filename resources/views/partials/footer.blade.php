@@ -3,11 +3,12 @@
         <div class="footer-section">
             <h3>APEEAC</h3>
             <ul>
-                <li><a href="{{ route('apeeac') }}#qui-sommes-nous">Qui sommes-nous ?</a></li>
-                <li><a href="{{ route('apeeac') }}#adherer">Adhérer</a></li>
-                <li><a href="{{ route('apeeac') }}#contacter">Nous contacter</a></li>
-                <li><a href="{{ route('apeeac') }}#benevole">Devenir bénévole</a></li>
+                <li><a href="{{ route('qui-sommes-nous') }}">Qui sommes-nous ?</a></li>
+                <li><a href="{{ route('adherer') }}">Adhérer</a></li>
+                <li><a href="{{ route('contact') }}">Nous contacter</a></li>
+                <li><a href="{{ route('benevole') }}">Devenir bénévole</a></li>
             </ul>
+
         </div>
         <div class="footer-section">
             <h3>Services</h3>
@@ -21,10 +22,10 @@
         <div class="footer-section">
             <h3>Conservatoire</h3>
             <ul>
-                <li><a href="{{ route('conservatoire') }}#infos-pratiques">Informations pratiques</a></li>
-                <li><a href="{{ route('conservatoire') }}#cursus">Les cursus</a></li>
-                <li><a href="{{ route('pepites-musicales') }}">Pépites musicales</a></li>
-                <li><a href="{{ route('conservatoire') }}#lien-site">Site du conservatoire</a></li>
+                <li><a href="{{ route('conservatoire') }}/infos-pratiques">Informations pratiques</a></li>
+                <li><a href="{{ route('conservatoire') }}/cursus">Les cursus</a></li>
+                <li><a href="{{ route('pepites-musicales') }}/pepite_musicale">Pépites musicales</a></li>
+                <li><a href="{{ route('conservatoire') }}/lien-site">Site du conservatoire</a></li>
             </ul>
         </div>
         <div class="footer-section">

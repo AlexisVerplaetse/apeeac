@@ -6,7 +6,7 @@
 
     <div class="navbar">
         <div class="welcome">
-            Bienvenue, {{ Auth::user()->name }} !
+            Bienvenue, {{ Auth::user()->nom }} !
         </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf

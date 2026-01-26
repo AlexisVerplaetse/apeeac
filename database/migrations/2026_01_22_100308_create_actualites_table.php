@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservation', function (Blueprint $table) {
+        Schema::create('actualites', function (Blueprint $table) {
             $table->id();
-            $table->date('date_reservation');
-            $table->string('statut');
-            $table->foreignId('id_utilisateur')->constrained('utilisateur');
-            $table->foreignId('id_inventaire')->constrained('inventaire');
+            $table->string('titre');
+            $table->text('contenu');
+            $table->date('date_publication');
+            $table->binary('image')->nullable();
+            $table->foreignId('archive_id')->constrained('archive')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservation');
+        Schema::dropIfExists('actualites');
     }
 };

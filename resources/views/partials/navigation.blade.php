@@ -6,15 +6,13 @@
         </div>
         <ul class="nav-menu">
             <li><a href="{{ route('accueil') }}" class="{{ Request::routeIs('accueil') || Request::routeIs('home') ? 'active' : '' }}">Accueil</a></li>
-            <li><a href="{{ route('actualites') }}" class="{{ Request::routeIs('actualites') ? 'active' : '' }}">Actualités</a></li>
-            
             <li>
     <a href="{{ route('apeeac') }}" class="{{ Request::routeIs('apeeac') ? 'active' : '' }}">APEEAC</a>
     <div class="dropdown-content">
-        <a href="{{ route('apeeac') }}#qui-sommes-nous">Qui sommes-nous ?</a>
-        <a href="{{ route('apeeac') }}#adherer">Adhérer</a>
-        <a href="{{ route('apeeac') }}#contacter">Contacter</a>
-        <a href="{{ route('apeeac') }}#benevole">Bénévole : S'impliquer</a>
+        <a href="{{ route('qui-sommes-nous') }}">Qui sommes-nous ?</a>
+        <a href="{{ route('adherer') }}">Adhérer</a>
+        <a href="{{ route('contact') }}">Contacter</a>
+        <a href="{{ route('benevole') }}">Bénévole : S'impliquer</a>
     </div>
 </li>
             
