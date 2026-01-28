@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\ActualiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -9,17 +11,9 @@ use App\Http\Controllers\AuthController;
 |--------------------------------------------------------------------------
 */
 
-use App\Models\Archive;
-
-Route::get('/', function () {
-    $archives = Archive::all();
-
-    return view('pages.accueil', compact('archives'));
-})->name('home');
-
-Route::get('/accueil', function () {
-    return view('pages.accueil');
-})->name('accueil');
+// Page d'accueil avec actualités (UNIQUE)
+Route::get('/', [ArchiveController::class, 'index'])->name('home');
+Route::get('/accueil', [ArchiveController::class, 'index'])->name('accueil');
 
 Route::get('/apeeac', function () {
     return view('pages.apeeac.apeeac');
@@ -53,9 +47,10 @@ Route::get('/administratif', function () {
     return view('pages.administratif');
 })->name('administratif');
 
-Route::get('/test', function () {
-    return view('pages.test');
-})->name('test');
+// Voir les actualités d'une année spécifique (PUBLIC)
+Route::get('/actualites/{archive_id}', [ActualiteController::class, 'indexByArchive'])
+    ->name('actualites.annee');
+
 /*
 |--------------------------------------------------------------------------
 | Authentification
@@ -68,7 +63,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| Pages protégées
+| Pages protégées (Utilisateur connecté)
 |--------------------------------------------------------------------------
 */
 
@@ -104,26 +99,26 @@ Route::post('/contact', function () {
 Route::get('/benevole', function () {
     return view('pages.apeeac.benevole');
 })->name('benevole');
+
 /*
 |--------------------------------------------------------------------------
-| Admin 
+| ⭐ Admin UNIQUEMENT - Archives & Actualités (SÉCURISÉ)
 |--------------------------------------------------------------------------
 */
-use App\Http\Controllers\ArchiveController;
 
-Route::post('/archive', [ArchiveController::class, 'store'])
-    ->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    
+    // Gestion des archives (Admin uniquement - vérification dans le contrôleur)
+    Route::post('/archive', [ArchiveController::class, 'store'])
+        ->name('archive.store');
 
-Route::get('/accueil', [ArchiveController::class, 'index'])->name('accueil');
+    Route::delete('/archive/{id}', [ArchiveController::class, 'destroy'])
+        ->name('archive.destroy');
 
+    // Gestion des actualités (Admin uniquement - vérification dans le contrôleur)
+    Route::post('/actualite', [ActualiteController::class, 'store'])
+        ->name('actualite.store');
 
-use App\Http\Controllers\ActualiteController;
-
-// Page pour voir les actualités d'une année
-Route::get('/actualites/{archive_id}', [ActualiteController::class, 'indexByArchive'])
-    ->name('actualites.annee');
-
-// Supprimer une année (Admin)
-Route::delete('/archive/{id}', [ArchiveController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('archive.destroy');
+    Route::delete('/actualite/{id}', [ActualiteController::class, 'destroy'])
+        ->name('actualite.destroy');
+});

@@ -1,275 +1,448 @@
-@extends('layouts.app') <!-- On utilise le layout -->
+@extends('layouts.app')
 
-@section('title', 'Accueil') <!-- Titre spécifique -->
+@section('title', 'Accueil')
 
-@section('content') <!-- Contenu spécifique -->
+@section('content')
 
-
- 
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Association des Parents d'Élèves du Conservatoire</h1>
+    <p>Accompagner et soutenir la vie musicale au sein de notre conservatoire</p>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Association des Parents d'Élèves du Conservatoire</h1>
-        <p>Accompagner et soutenir la vie musicale au sein de notre conservatoire</p>
-    </section>
-
-     @if(Auth::check() && Auth::user()->role === 'Admin')
-    <p>Bienvenue, {{ Auth::user()->nom }} !</p>
-    <form method="POST" action="{{ route('logout') }}">
+@if(Auth::check() && Auth::user()->role === 'Admin')
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+        <p class="text-gray-700">Bienvenue, {{ Auth::user()->nom }} !</p>
+        <form method="POST" action="{{ route('logout') }}" class="inline">
             @csrf
             <button type="submit" class="logout-btn">Déconnexion</button>
         </form>
-    @endif
-    
-    <br>
+    </div>
+@endif
 
-    
-    <!-- Navigation latérale -->
-        <div class="w-80 bg-white border-r border-gray-200 overflow-y-auto">
-            <div class="p-6">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span class="text-white text-2xl">📄</span>
-                    </div>
-                    <h2 class="ml-3 text-lg font-semibold text-gray-800">
-                        Sommaire du document
-                    </h2>
-                    
+<!-- Messages de feedback -->
+<div class="max-w-7xl mx-auto px-4 mt-4">
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul class="list-disc list-inside">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+
+<!-- ================= LAYOUT PRINCIPAL ================= -->
+<div class="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto px-4 py-6">
+
+    <!-- ===== SIDEBAR / ANNEES (passe en haut sur mobile) ===== -->
+    <aside class="w-full lg:w-80 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="p-4 lg:p-6">
+
+            <div class="flex items-center mb-4 lg:mb-6">
+                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="text-white text-xl lg:text-2xl">📄</span>
+                </div>
+                <h2 class="ml-3 text-base lg:text-lg font-semibold text-gray-800">
+                    Sommaire des actualités
+                </h2>
+            </div>
+
+            <!-- Liste des archives -->
+            @if($archives->isEmpty())
+                <p class="text-sm text-gray-600">Aucune année enregistrée.</p>
+            @else
+                <ul class="space-y-3">
+                    @foreach($archives as $archive)
+                        <li class="border-b border-gray-100 pb-3 last:border-0">
+                            <a href="{{ route('actualites.annee', $archive->id) }}"
+                               class="text-sm lg:text-base font-semibold text-blue-600 hover:text-blue-800 hover:underline block">
+                                📅 {{ $archive->annee }}
+                            </a>
+
+                            @if(Auth::check() && Auth::user()->role === 'Admin')
+                                <form action="{{ route('archive.destroy', $archive->id) }}" method="POST" class="mt-2">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="text-xs lg:text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                            onclick="return confirm('Voulez-vous vraiment supprimer cette année ?')">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+
+            <!-- Ajouter une année (Admin) -->
+            @if(Auth::check() && Auth::user()->role === 'Admin')
+                <button id="bouton_add_annee" class="mt-4 lg:mt-6 w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
+                    ➕ Ajouter une année
+                </button>
+
+                <form id="form_archive" action="/archive" method="POST" class="mt-4 hidden">
+                    @csrf
+                    <input type="text" name="annee" placeholder="Ex: 2026"
+                           class="border px-3 py-2 rounded w-full mb-2 text-sm lg:text-base" required>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base">
+                        Envoyer
+                    </button>
+                </form>
+
+                <script>
+                    document.getElementById('bouton_add_annee')?.addEventListener('click', () => {
+                        document.getElementById('form_archive').classList.toggle('hidden');
+                    });
+                </script>
+            @endif
+
+        </div>
+    </aside>
+
+    <!-- ===== CONTENU PRINCIPAL / ACTUALITES ===== -->
+    <main class="flex-1 min-w-0">
+
+        <!-- Bouton Ajouter une actualité (Admin) -->
+        @if(Auth::check() && Auth::user()->role === 'Admin')
+            <button id="bouton_add_actualite" class="mb-6 w-full lg:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
+                ➕ Ajouter une actualité
+            </button>
+
+            <form id="form_actualite" action="{{ route('actualite.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
+                @csrf
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Titre *</label>
+                    <input type="text" name="titre" placeholder="Titre de l'actualité" value="{{ old('titre') }}"
+                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
                 </div>
 
-                <!-- Liste des archives -->
-                @if($archives->isEmpty())
-                <p>Aucune année enregistrée.</p>    
-                @else
-    <ul>
-        <!-- Boucle sur les archives -->
-        @foreach($archives as $archive)
-            <li class="date_archive">
-                
-                <!-- Lien vers les actualités -->
-                <a href="{{ route('actualites.annee', $archive->id) }}">
-                    {{ $archive->annee }}
-                </a>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Contenu *</label>
+                    <textarea name="contenu" placeholder="Contenu de l'actualité"
+                              class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" rows="4" required>{{ old('contenu') }}</textarea>
+                </div>
 
-                @if(Auth::check() && Auth::user()->role === 'Admin')
-                    <!-- Formulaire pour supprimer -->
-                    <form action="{{ route('archive.destroy', $archive->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-admin" onclick="return confirm('Voulez-vous vraiment supprimer cette année ?')">
-                            Supprimer
-                        </button>
-                    </form>
-                @endif
-            </li>
-        @endforeach
-    </ul>
-    @endif
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Date de publication *</label>
+                    <input type="date" name="date_publication" value="{{ old('date_publication') }}"
+                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                </div>
 
-    
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Année (Archive) *</label>
+                    <select name="archive_id" class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        <option value="">-- Choisir une année --</option>
+                        @foreach($archives as $archive)
+                            <option value="{{ $archive->id }}" {{ old('archive_id') == $archive->id ? 'selected' : '' }}>
+                                {{ $archive->annee }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-<!-- Formulaire caché par défaut -->
-    @if(Auth::check() && Auth::user()->role === 'Admin')
-    <button id="bouton_add_annee" class="btn-admin">Ajouter une annee</button>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Image (optionnel)</label>
+                    <input type="file" name="image" accept="image/*"
+                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base">
+                    <p class="text-xs text-gray-500 mt-1">Formats : JPEG, PNG, JPG, GIF (max 2 Mo)</p>
+                </div>
 
-    
-        <form id="form_archive" action="/archive" method="POST" style="display:none; margin-top:10px;">
-        @csrf
-            <input type="text" name="annee" placeholder="Annee" required>
-            <button type="submit" class="btn-admin">Envoyer</button>
-        </form>
-        <script>
-    // Capter le clic sur le bouton
-    document.getElementById('bouton_add_annee').addEventListener('click', function() {
-    const form = document.getElementById('form_archive');
-            if(form.style.display === 'none') {
-                form.style.display = 'block'; // afficher le formulaire
-            } else {
-                form.style.display = 'none'; // cacher si on reclique
-            }
-            });
-        </script>
-    @endif
+                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base font-semibold">
+                    Publier l'actualité
+                </button>
+            </form>
 
+            <script>
+                document.getElementById('bouton_add_actualite')?.addEventListener('click', () => {
+                    document.getElementById('form_actualite').classList.toggle('hidden');
+                });
+            </script>
+        @endif
 
-
-
-    
-                <nav class="space-y-1">
-                    <template x-for="section in sections" :key="section.id">
-                        <button
-                            @click="activeSection = section.id"
-                            :class="activeSection === section.id ? 
-                                'bg-blue-100 text-blue-700 font-medium shadow-sm' : 
-                                'text-gray-700 hover:bg-gray-100'"
-                            class="w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-start"
-                        >
-                            <span class="text-xl mr-3 mt-0.5" x-text="section.icon"></span>
-                            <span class="flex-1 text-sm leading-relaxed" x-text="section.title"></span>
-                            <span x-show="activeSection === section.id" class="text-blue-500 ml-2">▶</span>
-                        </button>
-                    </template>
-                </nav>
-                
-            </div>
-        </div>
-        
-       
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Actualités Section -->
+        <!-- Liste des actualités -->
         <section id="actualites">
+            <h2 class="text-xl lg:text-2xl font-bold mb-4 lg:mb-6">📰 Actualités récentes</h2>
             
-            <div class="articles-grid">
-                <article class="article-card">
-                    <div class="article-image">🎵</div>
-                    <div class="article-content">
-                        <div class="article-date">10 janvier 2026</div>
-                        <h3 class="article-title">Concert de printemps 2026</h3>
-                        <p class="article-excerpt">Les inscriptions pour le concert de printemps sont ouvertes ! Une belle opportunité pour nos élèves de se produire sur scène.</p>
-                        <a href="#" class="read-more">Lire la suite →</a>
-                    </div>
-                </article>
+            @if($actualites->isEmpty())
+                <div class="bg-gray-100 rounded-lg p-6 lg:p-8 text-center">
+                    <p class="text-gray-600 text-sm lg:text-base">Aucune actualité pour le moment.</p>
+                </div>
+            @else
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                    @foreach($actualites as $actualite)
+                        <article class="bg-white rounded-xl shadow hover:shadow-lg transition p-4 relative">
+                            
+                            <!-- Bouton Supprimer (Admin uniquement) -->
+                            @if(Auth::check() && Auth::user()->role === 'Admin')
+                                <form action="{{ route('actualite.destroy', $actualite->id) }}" method="POST" class="absolute top-2 right-2 z-10">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 shadow-lg transition"
+                                            onclick="return confirm('Voulez-vous vraiment supprimer cette actualité ?')"
+                                            title="Supprimer l'actualité">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            @endif
+                            
+                            <!-- Image ou emoji par défaut -->
+                            @if($actualite->image)
+                                <div class="h-40 lg:h-48 rounded-lg overflow-hidden">
+                                    <img src="{{ asset('storage/' . $actualite->image) }}" 
+                                         alt="{{ $actualite->titre }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            @else
+                                <div class="h-40 lg:h-48 bg-gradient-to-r from-blue-400 to-pink-400 rounded-lg flex items-center justify-center text-4xl lg:text-5xl">
+                                    🎵
+                                </div>
+                            @endif
+                            
+                            <div class="mt-3 lg:mt-4">
+                                <!-- Date et année -->
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-xs lg:text-sm text-gray-500">
+                                        {{ \Carbon\Carbon::parse($actualite->date_publication)->translatedFormat('d F Y') }}
+                                    </p>
+                                    @if($actualite->archive)
+                                        <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded font-medium">
+                                            {{ $actualite->archive->annee }}
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <!-- Titre -->
+                                <h3 class="text-base lg:text-lg font-semibold mt-2 text-gray-800 line-clamp-2">
+                                    {{ $actualite->titre }}
+                                </h3>
+                                
+                                <!-- Contenu (extrait) -->
+                                <p class="text-sm lg:text-base text-gray-600 mt-2 line-clamp-3">
+                                    {{ Str::limit($actualite->contenu, 120) }}
+                                </p>
+                                
+                                <!-- Lien "Lire la suite" -->
+                                <button 
+                                   class="text-orange-500 font-semibold mt-3 inline-block hover:text-orange-600 transition text-sm lg:text-base"
+                                   onclick="afficherActualite({{ $actualite->id }})">
+                                    Lire la suite →
+                                </button>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            @endif
         </section>
 
-    </div>
-        
+        <!-- Modal pour afficher l'actualité complète -->
+        <div id="modal-actualite" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-start">
+                    <h2 id="modal-titre" class="text-lg lg:text-2xl font-bold text-gray-800 pr-8"></h2>
+                    <button onclick="fermerModal()" class="text-gray-400 hover:text-gray-600 text-3xl leading-none flex-shrink-0">
+                        &times;
+                    </button>
+                </div>
+                <div class="p-4 lg:p-6">
+                    <p id="modal-date" class="text-xs lg:text-sm text-gray-500 mb-4"></p>
+                    <div id="modal-image" class="mb-4"></div>
+                    <div id="modal-contenu" class="text-sm lg:text-base text-gray-700 whitespace-pre-wrap leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Données des actualités en JSON
+            const actualites = @json($actualites);
+            
+            function afficherActualite(id) {
+                const actualite = actualites.find(a => a.id === id);
+                if (!actualite) return;
+                
+                document.getElementById('modal-titre').textContent = actualite.titre;
+                document.getElementById('modal-date').textContent = new Date(actualite.date_publication).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                document.getElementById('modal-contenu').textContent = actualite.contenu;
+                
+                // Afficher l'image si elle existe
+                const modalImage = document.getElementById('modal-image');
+                if (actualite.image) {
+                    modalImage.innerHTML = `<img src="/storage/${actualite.image}" alt="${actualite.titre}" class="w-full rounded-lg">`;
+                } else {
+                    modalImage.innerHTML = '';
+                }
+                
+                const modal = document.getElementById('modal-actualite');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function fermerModal() {
+                const modal = document.getElementById('modal-actualite');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') fermerModal();
+            });
+
+            document.getElementById('modal-actualite')?.addEventListener('click', (e) => {
+                if (e.target.id === 'modal-actualite') {
+                    fermerModal();
+                }
+            });
+        </script>
+
         <!-- Calendrier -->
-        <section class="calendar-section">
-            <div class="calendar-container">
-                <div class="calendar-header">
-                    <h2>📅 Calendrier des Événements</h2>
+        <section class="calendar-section mt-8 lg:mt-12">
+            <div class="calendar-container bg-white rounded-lg shadow p-4 lg:p-6">
+                <div class="calendar-header mb-4">
+                    <h2 class="text-lg lg:text-xl font-bold">📅 Calendrier des Événements</h2>
                 </div>
 
-                <div class="calendar-controls">
-                    <button id="prevMonth">← Précédent</button>
-                    <span class="calendar-month" id="currentMonth">Janvier 2026</span>
-                    <button id="nextMonth">Suivant →</button>
+                <div class="calendar-controls flex justify-between items-center mb-4 gap-2">
+                    <button id="prevMonth" class="bg-blue-500 text-white px-3 lg:px-4 py-2 rounded hover:bg-blue-600 text-sm lg:text-base">
+                        ← Préc.
+                    </button>
+                    <span class="calendar-month font-semibold text-sm lg:text-base" id="currentMonth">Janvier 2026</span>
+                    <button id="nextMonth" class="bg-blue-500 text-white px-3 lg:px-4 py-2 rounded hover:bg-blue-600 text-sm lg:text-base">
+                        Suiv. →
+                    </button>
                 </div>
 
                 <div class="calendar-grid">
-                    <div class="calendar-weekdays">
-                        <div class="calendar-weekday">Lun</div>
-                        <div class="calendar-weekday">Mar</div>
-                        <div class="calendar-weekday">Mer</div>
-                        <div class="calendar-weekday">Jeu</div>
-                        <div class="calendar-weekday">Ven</div>
-                        <div class="calendar-weekday">Sam</div>
-                        <div class="calendar-weekday">Dim</div>
+                    <div class="calendar-weekdays grid grid-cols-7 gap-1 mb-2">
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">L</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">M</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">M</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">J</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">V</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">S</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">D</div>
                     </div>
-                    <div class="calendar-days" id="calendarDays"></div>
+                    <div class="calendar-days grid grid-cols-7 gap-1" id="calendarDays"></div>
                 </div>
 
-                <div class="calendar-legend">
-                    <div class="legend-item">
-                        <div class="legend-dot today"></div>
+                <div class="calendar-legend flex flex-wrap gap-4 mt-4 text-xs lg:text-sm">
+                    <div class="legend-item flex items-center gap-2">
+                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-blue-500 rounded-full"></div>
                         <span>Aujourd'hui</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-dot event"></div>
+                    <div class="legend-item flex items-center gap-2">
+                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-orange-500 rounded-full"></div>
                         <span>Événement</span>
                     </div>
                 </div>
             </div>
         </section>
+
+        <script>
+            let currentDate = new Date();
+            const events = [];
+
+            const monthNames = [
+                'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+            ];
+
+            function renderCalendar() {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth();
+                
+                document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+                
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                
+                let startDay = firstDay.getDay();
+                startDay = startDay === 0 ? 6 : startDay - 1;
+                
+                const daysInMonth = lastDay.getDate();
+                const daysInPrevMonth = new Date(year, month, 0).getDate();
+                
+                const calendarDays = document.getElementById('calendarDays');
+                calendarDays.innerHTML = '';
+                
+                for (let i = startDay - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    const dayDiv = createDayElement(day, 'text-gray-400 text-xs lg:text-sm');
+                    calendarDays.appendChild(dayDiv);
+                }
+                
+                const today = new Date();
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const isToday = day === today.getDate() && 
+                                   month === today.getMonth() && 
+                                   year === today.getFullYear();
+                    
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const hasEvent = events.includes(dateString);
+                    
+                    let classes = 'text-xs lg:text-sm';
+                    if (isToday) classes += ' bg-blue-500 text-white font-bold';
+                    else if (hasEvent) classes += ' bg-orange-100 text-orange-600 font-semibold';
+                    
+                    const dayDiv = createDayElement(day, classes);
+                    calendarDays.appendChild(dayDiv);
+                }
+                
+                const totalCells = calendarDays.children.length;
+                const remainingCells = 42 - totalCells;
+                for (let day = 1; day <= remainingCells; day++) {
+                    const dayDiv = createDayElement(day, 'text-gray-400 text-xs lg:text-sm');
+                    calendarDays.appendChild(dayDiv);
+                }
+            }
+
+            function createDayElement(day, className) {
+                const div = document.createElement('div');
+                div.className = `calendar-day text-center p-1 lg:p-2 rounded hover:bg-gray-100 cursor-pointer ${className}`;
+                div.textContent = day;
+                return div;
+            }
+
+            document.getElementById('prevMonth')?.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            document.getElementById('nextMonth')?.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            renderCalendar();
+        </script>
+
     </main>
+</div>
 
-   
-          
-
-    <script>
-        // Configuration du calendrier
-        let currentDate = new Date();
-        
-        // Événements (dates au format YYYY-MM-DD)
-        const events = [
-        ];
-
-        const monthNames = [
-            'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-            'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-        ];
-
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            // Mise à jour du titre
-            document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
-            
-            // Premier jour du mois
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            
-            // Jour de la semaine du premier jour (0 = dimanche, 1 = lundi...)
-            let startDay = firstDay.getDay();
-            startDay = startDay === 0 ? 6 : startDay - 1; // Ajuster pour commencer le lundi
-            
-            const daysInMonth = lastDay.getDate();
-            const daysInPrevMonth = new Date(year, month, 0).getDate();
-            
-            const calendarDays = document.getElementById('calendarDays');
-            calendarDays.innerHTML = '';
-            
-            // Jours du mois précédent
-            for (let i = startDay - 1; i >= 0; i--) {
-                const day = daysInPrevMonth - i;
-                const dayDiv = createDayElement(day, 'other-month');
-                calendarDays.appendChild(dayDiv);
-            }
-            
-            // Jours du mois actuel
-            const today = new Date();
-            for (let day = 1; day <= daysInMonth; day++) {
-                const isToday = day === today.getDate() && 
-                               month === today.getMonth() && 
-                               year === today.getFullYear();
-                
-                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const hasEvent = events.includes(dateString);
-                
-                const classes = [];
-                if (isToday) classes.push('today');
-                if (hasEvent) classes.push('has-event');
-                
-                const dayDiv = createDayElement(day, classes.join(' '));
-                calendarDays.appendChild(dayDiv);
-            }
-            
-            // Jours du mois suivant
-            const totalCells = calendarDays.children.length;
-            const remainingCells = 42 - totalCells; // 6 semaines max
-            for (let day = 1; day <= remainingCells; day++) {
-                const dayDiv = createDayElement(day, 'other-month');
-                calendarDays.appendChild(dayDiv);
-            }
-        }
-
-        function createDayElement(day, className) {
-            const div = document.createElement('div');
-            div.className = `calendar-day ${className}`;
-            div.textContent = day;
-            return div;
-        }
-
-        // Navigation
-        document.getElementById('prevMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-
-        document.getElementById('nextMonth').addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
-
-        // Initialisation
-        renderCalendar();
-    </script>
-</body>
-</html>
 @endsection
