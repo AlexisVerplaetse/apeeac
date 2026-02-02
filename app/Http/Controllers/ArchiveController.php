@@ -74,4 +74,5 @@ class ArchiveController extends Controller
 
         return redirect()->back()->with('success', 'Année supprimée avec succès !');
     }
+    
 }

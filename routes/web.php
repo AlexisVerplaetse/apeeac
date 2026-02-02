@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ActualiteController;
+use App\Http\Controllers\EvenementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,4 +122,26 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/actualite/{id}', [ActualiteController::class, 'destroy'])
         ->name('actualite.destroy');
+});
+
+// Gestion des evenements (authentification requise)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/evenements', [EvenementController::class, 'store'])
+        ->name('evenements');
+});
+
+// Ajouter cette ligne dans la section des routes authentifiées
+Route::middleware(['auth'])->group(function () {
+    Route::post('/evenements', [EvenementController::class, 'store'])
+        ->name('evenements');
+    
+    // ✅ Ajouter cette nouvelle route
+    Route::delete('/evenements/{id}', [EvenementController::class, 'destroy'])
+        ->name('evenements.destroy');
+});
+
+
+//api pour récupérer les événements a la fin de web.php
+Route::get('/api/evenements', function () {
+    return \App\Models\Evenement::all();
 });
