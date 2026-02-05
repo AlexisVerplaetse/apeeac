@@ -14,12 +14,14 @@ class EvenementController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'event_date' => 'required|date',
+            'category' => 'required|string|in:musique,théâtre,autres',
         ]);
 
         Evenement::create([
             'title' => $request->title,
             'description' => $request->description,
             'event_date' => $request->event_date,
+            'category' => $request->category,
         ]);
 
         return redirect()->back()->with('success', 'Événement ajouté avec succès');

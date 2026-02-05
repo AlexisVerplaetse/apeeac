@@ -1,7 +1,7 @@
 /* ================================
    CSS POUR CONSERVATOIRE DE MUSIQUE
    Fichier: public/css/style.css
-   Palette: Bleu #179bae | Orange #ff8343 | Rose #ef5a6f
+   Nouvelle charte graphique
    ================================ */
 
 /* === RESET & BASE === */
@@ -12,28 +12,48 @@
 }
 
 :root {
-    --primary: #7689b4;
-    --secondary: #f1aba9;
-    --accent: #f5a14a;
-    --dark: #1a202c;
-    --light: #f7fafc;
+    /* Couleurs principales de la nouvelle charte */
+    --primary: #7689b4;        /* Bleu doux */
+    --secondary: #f5a14a;      /* Orange */
+    --accent: #f1aba9;         /* Rose */
+    --accent2: #f2744e;        /* Orange corail */
+    --success: #92b76b;        /* Vert sauge */
+    --warning: #f3c754;        /* Jaune */
+    
+    /* Couleurs de fond */
+    --bg-main: #c9ceb2;        /* Vert sauge pour fond */
+    --bg-light: #faf4e5;       /* Blanc cassé */
+    
+    /* Couleurs neutres */
+    --dark: #000000;           /* Noir pour textes et boutons */
     --gray: #4a5568;
     --white: #ffffff;
-    --primary-dark: #126b7a;
+    
+    /* Variations */
+    --primary-dark: #5a6a8f;
     --secondary-light: #ffb380;
 }
 
 body {
-    font-family: 'Arial Rounded MT bold', 'Avenir Next';
-    background: var(--light);
+    font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
     min-height: 100vh;
     color: var(--dark);
     line-height: 1.8;
 }
 
+/* === POLICES === */
+h1, h2, h3, h4, h5, h6,
+.logo,
+.calendar-month,
+.article-title,
+.hero h1 {
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', 'Arial', sans-serif;
+}
+
 /* Navigation */
 nav {
-    background: linear-gradient(135deg, var(--primary) 0%);
+    background: var(--primary);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
@@ -56,7 +76,7 @@ nav {
 .logo {
     font-size: 35px;
     font-weight: 700;
-    color: #fff;
+    color: white;
     text-decoration: none;
     letter-spacing: 1px;
 }
@@ -75,16 +95,17 @@ nav {
 .nav-menu > li > a {
     display: block;
     padding: 15px 20px;
-    color: #fff;
+    color: white;
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .nav-menu > li > a:hover,
 .nav-menu > li > a.active {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
     border-bottom-color: var(--secondary);
 }
 
@@ -113,7 +134,7 @@ main {
 
 .card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-left-color: var(--accent);
+    border-left-color: var(--accent2);
     transform: translateY(-2px);
 }
 
@@ -121,7 +142,7 @@ main {
     margin-bottom: 1.2rem;
     color: var(--primary);
     font-size: 1.8rem;
-    font-weight: 400;
+    font-weight: 700;
     letter-spacing: 1px;
 }
 
@@ -129,13 +150,14 @@ main {
     margin-bottom: 0.8rem;
     color: var(--secondary);
     font-size: 1.4rem;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .card p {
-    color: var(--gray);
+    color: var(--dark);
     margin-bottom: 1rem;
     font-size: 1.05rem;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .card code {
@@ -155,6 +177,7 @@ main {
     display: flex;
     align-items: center;
     gap: 5px;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .meta::before {
@@ -174,22 +197,23 @@ main {
 .button {
     display: inline-block;
     padding: 12px 32px;
-    background: var(--primary);
-    color: white;
+    background: var(--secondary);
+    color: var(--dark);
     text-decoration: none;
     border-radius: 200px;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
     letter-spacing: 0.5px;
     font-size: 0.95rem;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
 }
 
 .button:hover {
-    background: var(--primary-dark);
+    background: var(--accent2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(23, 155, 174, 0.4);
+    box-shadow: 0 4px 12px rgba(245, 161, 74, 0.4);
 }
 
 .btn {
@@ -197,11 +221,12 @@ main {
     padding: 12px 32px;
     border: none;
     border-radius: 25px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
     letter-spacing: 0.5px;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
 }
 
 .btn-primary {
@@ -212,24 +237,24 @@ main {
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(23, 155, 174, 0.4);
+    box-shadow: 0 4px 12px rgba(118, 137, 180, 0.4);
 }
 
 .btn-secondary {
     background: var(--secondary);
-    color: white;
+    color: var(--dark);
 }
 
 .btn-secondary:hover {
-    background: #e66f2e;
+    background: var(--accent2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 131, 67, 0.4);
+    box-shadow: 0 4px 12px rgba(242, 116, 78, 0.4);
 }
 
 /* Footer */
 footer {
-    background: linear-gradient(135deg, var(--primary) 0%);
-    color: #fff;
+    background: var(--primary);
+    color: white;
     padding: 40px 20px;
     margin-top: 60px;
 }
@@ -243,9 +268,10 @@ footer {
 }
 
 .footer-section h3 {
-    color: var(--);
+    color: white;
     margin-bottom: 20px;
     font-size: 18px;
+    font-weight: 700;
 }
 
 .footer-section ul {
@@ -254,12 +280,14 @@ footer {
 
 .footer-section ul li {
     margin-bottom: 10px;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .footer-section a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     transition: color 0.3s ease;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .footer-section a:hover {
@@ -270,8 +298,9 @@ footer {
     text-align: center;
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.8);
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 /* Dropdown */
@@ -289,11 +318,12 @@ footer {
 }
 
 .dropdown-content a {
-    color: #fff;
+    color: white;
     padding: 12px 20px;
     text-decoration: none;
     display: block;
     transition: all 0.3s ease;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .dropdown-content a:hover {
@@ -307,8 +337,8 @@ footer {
 
 /* Hero Section */
 .hero {
-    background: var(--gray);
-    color: white;
+    background: var(--bg-light);
+    color: var(--dark);
     padding: 80px 20px;
     text-align: center;
 }
@@ -317,13 +347,15 @@ footer {
     font-size: 48px;
     margin-bottom: 20px;
     font-weight: 700;
+    color: var(--primary);
 }
 
 .hero p {
     font-size: 20px;
     max-width: 800px;
     margin: 0 auto;
-    opacity: 0.95;
+    opacity: 0.9;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 /* ================================
@@ -333,7 +365,7 @@ footer {
 .calendar-section {
     margin-top: 60px;
     padding: 50px 0;
-    background: white;
+    background: var(--bg-light);
     border-radius: 100px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -355,7 +387,7 @@ footer {
     color: var(--primary);
     font-size: 2rem;
     margin-bottom: 10px;
-    font-weight: 400;
+    font-weight: 700;
     letter-spacing: 2px;
 }
 
@@ -363,7 +395,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--light);
+    background: white;
     padding: 20px 25px;
     border-radius: 150px;
     margin-bottom: 30px;
@@ -371,33 +403,33 @@ footer {
 }
 
 .calendar-controls button {
-    background: var(--primary);
+    background: var(--secondary);
     border: none;
-    color: white;
+    color: var(--dark);
     padding: 10px 24px;
     border-radius: 250px;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease;
-    font-family: 'Georgia', serif;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
     letter-spacing: 0.5px;
 }
 
 .calendar-controls button:hover {
-    background: var(--primary-dark);
+    background: var(--accent2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(23, 155, 174, 0.3);
+    box-shadow: 0 4px 12px rgba(242, 116, 78, 0.3);
 }
 
 .calendar-month {
     color: var(--primary);
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 1px;
 }
 
 .calendar-grid {
-    background: var(--light);
+    background: white;
     border-radius: 50px;
     padding: 25px;
     border: 1px solid #e2e8f0;
@@ -414,11 +446,12 @@ footer {
 
 .calendar-weekday {
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary);
     padding: 10px;
     font-size: 0.95rem;
     letter-spacing: 0.5px;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
 }
 
 .calendar-days {
@@ -437,15 +470,16 @@ footer {
     transition: all 0.3s ease;
     font-weight: 500;
     position: relative;
-    background: white;
+    background: var(--bg-light);
     border: 1px solid #e2e8f0;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .calendar-day:hover {
-    background: var(--light);
+    background: white;
     border-color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(23, 155, 174, 0.2);
+    box-shadow: 0 2px 8px rgba(118, 137, 180, 0.2);
 }
 
 .calendar-day.other-month {
@@ -479,7 +513,7 @@ footer {
     gap: 40px;
     margin-top: 30px;
     padding: 20px;
-    background: var(--light);
+    background: white;
     border-radius: 50px;
     border: 1px solid #e2e8f0;
 }
@@ -491,6 +525,7 @@ footer {
     color: var(--dark);
     font-size: 0.95rem;
     font-weight: 500;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .legend-dot {
@@ -521,9 +556,10 @@ footer {
 .form-group label {
     display: block;
     margin-bottom: 0.6rem;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--dark);
     letter-spacing: 0.3px;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
 }
 
 .form-group input,
@@ -535,7 +571,7 @@ footer {
     border-radius: 100px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    font-family: 'Georgia', serif;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .form-group input:focus,
@@ -543,7 +579,7 @@ footer {
 .form-group select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(23, 155, 174, 0.1);
+    box-shadow: 0 0 0 3px rgba(118, 137, 180, 0.1);
 }
 
 /* ================================
@@ -601,12 +637,12 @@ footer {
 .article-image {
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    background: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-light) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 48px;
-    color: white;
+    color: var(--dark);
 }
 
 .article-content {
@@ -614,22 +650,24 @@ footer {
 }
 
 .article-date {
-    color: #7f8c8d;
+    color: var(--gray);
     font-size: 14px;
     margin-bottom: 10px;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .article-title {
     font-size: 22px;
     color: var(--primary);
     margin-bottom: 15px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .article-excerpt {
-    color: #555;
+    color: var(--dark);
     line-height: 1.6;
     margin-bottom: 15px;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .read-more {
@@ -637,10 +675,11 @@ footer {
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
+    font-family: 'Avenir Next', 'Avenir', sans-serif;
 }
 
 .read-more:hover {
-    color: var(--accent);
+    color: var(--accent2);
 }
 
 /* ================================
@@ -671,8 +710,8 @@ footer {
     height: 45px;
     border-radius: 50%;
     border: none;
-    background: var(--primary);
-    color: white;
+    background: var(--secondary);
+    color: var(--dark);
     font-size: 22px;
     cursor: pointer;
     display: none;
@@ -684,7 +723,7 @@ footer {
 }
 
 #backToTop:hover {
-    background: var(--accent);
+    background: var(--accent2);
     transform: translateY(-3px);
 }
 
@@ -773,47 +812,63 @@ footer {
         padding: 30px 0;
     }
 }
-.navbar {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .welcome {
-            font-size: 20px;
-            color: #333;
-        }
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
 
-        .btn-admin {
-    background-color: #4CAF50; /* vert */
+.navbar {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome {
+    font-size: 20px;
+    color: var(--dark);
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+}
+
+.logout-btn {
+    background: var(--accent2);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+}
+
+.btn-admin {
+    background-color: var(--success);
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+    font-weight: 600;
 }
 
 .btn-admin:hover {
-    background-color: #45a049; /* effet hover */
+    background-color: #7a9d5a;
+    transform: translateY(-2px);
 }
 
-/* Aparence de la Date archive */
+/* Apparence de la Date archive */
 .date_archive {
     font-size: 20px;
     color: var(--primary);
     margin-bottom: 15px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
 }

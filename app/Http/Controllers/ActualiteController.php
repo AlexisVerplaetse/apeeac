@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Actualite;
 use Illuminate\Support\Facades\Storage;
+use Mews\Purifier\Facades\Purifier;
 
 class ActualiteController extends Controller
 {
@@ -15,8 +16,10 @@ class ActualiteController extends Controller
             'contenu' => 'required',
             'date_publication' => 'required|date',
             'archive_id' => 'required|exists:archive,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
+         // Nettoyer le HTML
+        $validated['contenu'] = Purifier::clean($request->contenu);
 
         $data = $request->only(['titre', 'contenu', 'date_publication', 'archive_id']);
 

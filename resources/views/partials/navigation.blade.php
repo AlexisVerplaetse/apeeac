@@ -5,14 +5,14 @@
             <a href="{{ route('accueil') }}" class="logo">APEEAC</a>
         </div>
         <ul class="nav-menu">
-            <li><a href="{{ route('accueil') }}" class="{{ Request::routeIs('accueil') || Request::routeIs('home') ? 'active' : '' }}">Accueil</a></li>
+            <li><a href="{{ route('accueil') }}" class="{{ Request::routeIs('accueil') || Request::routeIs('home') ? 'active' : '' }}">Actualités</a></li>
             <li>
     <a href="{{ route('apeeac') }}" class="{{ Request::routeIs('apeeac') ? 'active' : '' }}">APEEAC</a>
     <div class="dropdown-content">
         <a href="{{ route('qui-sommes-nous') }}">Qui sommes-nous ?</a>
         <a href="{{ route('adherer') }}">Adhérer</a>
         <a href="{{ route('contact') }}">Contacter</a>
-        <a href="{{ route('benevole') }}">Bénévole : S'impliquer</a>
+        <a href="{{ route('benevole') }}">Bénévole : S'impliquer</a>>
     </div>
 </li>
             
@@ -29,7 +29,6 @@
                 </div>
             </li>
             
-            <li><a href="{{ route('pepites-musicales') }}" class="{{ Request::routeIs('pepites-musicales') ? 'active' : '' }}">Pépites Musicales</a></li>
             
             <li>
                 <a href="{{ route('petites-annonces') }}" class="{{ Request::routeIs('petites-annonces') ? 'active' : '' }}">Petites annonces</a>
@@ -40,16 +39,6 @@
                 </div>
             </li>
             
-            <li><a href="{{ route('vulgarisation') }}" class="{{ Request::routeIs('vulgarisation') ? 'active' : '' }}">Vulgarisation</a></li>
-            <li><a href="{{ route('trucs-astuces') }}" class="{{ Request::routeIs('trucs-astuces') ? 'active' : '' }}">Trucs et astuces</a></li>
-            
-            <li>
-                <a href="{{ route('administratif') }}" class="{{ Request::routeIs('administratif') ? 'active' : '' }}">Administratif</a>
-                <div class="dropdown-content">
-                    <a href="{{ route('administratif') }}#comptes-rendus">Comptes-rendus</a>
-                    <a href="{{ route('administratif') }}#pv">Procès-verbaux</a>
-                </div>
-            </li>
         </ul>
     </div>
 </nav>

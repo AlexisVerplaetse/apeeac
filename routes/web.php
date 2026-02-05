@@ -140,6 +140,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('evenements.destroy');
 });
 
+//temporaire pour test ckeditor
+Route::get('test', function () {
+    return view('pages.petit.petites-annonces-covoiturage');
+});
 
 //api pour récupérer les événements a la fin de web.php
 Route::get('/api/evenements', function () {

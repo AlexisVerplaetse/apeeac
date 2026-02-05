@@ -118,65 +118,65 @@
     </aside>
 
     <!-- ===== CONTENU PRINCIPAL / ACTUALITES ===== -->
-    <main class="flex-1 min-w-0">
+<main class="flex-1 min-w-0">
 
-        <!-- Bouton Ajouter une actualité (Admin) -->
-        @if(Auth::check() && Auth::user()->role === 'Admin')
-            <button id="bouton_add_actualite" class="mb-6 w-full lg:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
-                ➕ Ajouter une actualité
+    <!-- Bouton Ajouter une actualité (Admin) -->
+    @if(Auth::check() && Auth::user()->role === 'Admin')
+        <button id="bouton_add_actualite" class="mb-6 w-full lg:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
+            ➕ Ajouter une actualité
+        </button>
+
+        <form id="form_actualite" action="{{ route('actualite.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
+            @csrf
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Titre *</label>
+                <input type="text" name="titre" placeholder="Titre de l'actualité" value="{{ old('titre') }}"
+                       class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Contenu *</label>
+                
+                <!-- Éditeur Quill -->
+                <div id="editor-container" class="bg-white border border-gray-300 rounded" style="min-height: 200px;"></div>
+                
+                <!-- Champ caché pour stocker le contenu HTML -->
+                <input type="hidden" name="contenu" id="contenu-hidden" required>
+                
+                <p class="text-xs text-gray-500 mt-1">Utilisez la barre d'outils pour formater votre texte</p>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Date de publication *</label>
+                <input type="date" name="date_publication" value="{{ old('date_publication') }}"
+                       class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Année (Archive) *</label>
+                <select name="archive_id" class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    <option value="">-- Choisir une année --</option>
+                    @foreach($archives as $archive)
+                        <option value="{{ $archive->id }}" {{ old('archive_id') == $archive->id ? 'selected' : '' }}>
+                            {{ $archive->annee }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Image (optionnel)</label>
+                <input type="file" name="image" accept="image/*"
+                       class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base">
+                <p class="text-xs text-gray-500 mt-1">Formats : JPEG, PNG, JPG, GIF (max 2 Mo)</p>
+            </div>
+
+            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base font-semibold">
+                Publier l'actualité
             </button>
-
-            <form id="form_actualite" action="{{ route('actualite.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
-                @csrf
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Titre *</label>
-                    <input type="text" name="titre" placeholder="Titre de l'actualité" value="{{ old('titre') }}"
-                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Contenu *</label>
-                    <textarea name="contenu" placeholder="Contenu de l'actualité"
-                              class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" rows="4" required>{{ old('contenu') }}</textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Date de publication *</label>
-                    <input type="date" name="date_publication" value="{{ old('date_publication') }}"
-                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Année (Archive) *</label>
-                    <select name="archive_id" class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                        <option value="">-- Choisir une année --</option>
-                        @foreach($archives as $archive)
-                            <option value="{{ $archive->id }}" {{ old('archive_id') == $archive->id ? 'selected' : '' }}>
-                                {{ $archive->annee }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Image (optionnel)</label>
-                    <input type="file" name="image" accept="image/*"
-                           class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base">
-                    <p class="text-xs text-gray-500 mt-1">Formats : JPEG, PNG, JPG, GIF (max 2 Mo)</p>
-                </div>
-
-                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base font-semibold">
-                    Publier l'actualité
-                </button>
-            </form>
-
-            <script>
-                document.getElementById('bouton_add_actualite')?.addEventListener('click', () => {
-                    document.getElementById('form_actualite').classList.toggle('hidden');
-                });
-            </script>
-        @endif
+        </form>
+    @endif
 
         <!-- Liste des actualités -->
         <section id="actualites">
@@ -240,7 +240,7 @@
                                 
                                 <!-- Contenu (extrait) -->
                                 <p class="text-sm lg:text-base text-gray-600 mt-2 line-clamp-3">
-                                    {{ Str::limit($actualite->contenu, 120) }}
+                                    {!! $actualite->contenu !!}
                                 </p>
                                 
                                 <!-- Lien "Lire la suite" -->
@@ -287,7 +287,8 @@
                     month: 'long',
                     year: 'numeric'
                 });
-                document.getElementById('modal-contenu').textContent = actualite.contenu;
+                document.getElementById('modal-contenu').innerHTML = actualite.contenu;
+
                 
                 // Afficher l'image si elle existe
                 const modalImage = document.getElementById('modal-image');
@@ -296,24 +297,24 @@
                 } else {
                     modalImage.innerHTML = '';
                 }
-                
+                // Afficher la modal
                 const modal = document.getElementById('modal-actualite');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 document.body.style.overflow = 'hidden';
             }
-            
+            // Fermer la modal
             function fermerModal() {
                 const modal = document.getElementById('modal-actualite');
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
                 document.body.style.overflow = '';
             }
-            
+            // Fermer la modal avec Échap ou clic en dehors
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') fermerModal();
             });
-
+            
             document.getElementById('modal-actualite')?.addEventListener('click', (e) => {
                 if (e.target.id === 'modal-actualite') {
                     fermerModal();
@@ -368,6 +369,16 @@
                                    class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
                         </div>
 
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Catégorie *</label>
+                            <select name="category" class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                                <option value="">Sélectionner une catégorie</option>
+                                <option value="musique">Musique</option>
+                                <option value="théâtre">Théâtre</option>
+                                <option value="autres">Autres</option>
+                            </select>
+                        </div>
+
                         <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base font-semibold">
                             Ajouter l'événement
                         </button>
@@ -384,21 +395,30 @@
                         <span>Aujourd'hui</span>
                     </div>
                     <div class="legend-item flex items-center gap-2">
-                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-orange-500 rounded-full"></div>
-                        <span>Événement</span>
+                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-yellow-500 rounded-full"></div>
+                        <span id="legend-musique">musique</span>
                     </div>
+                     <div class="legend-item flex items-center gap-2">
+                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-purple-500 rounded-full"></div>
+                        <span id="legend-theatre">théâtre</span>
+                    </div>
+                     <div class="legend-item flex items-center gap-2">
+                        <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-green-500 rounded-full"></div>
+                        <span id="legend-autres">Autres</span>
+                    </div>
+                    
                 </div>
 
         
                 <div class="calendar-grid">
                     <div class="calendar-weekdays grid grid-cols-7 gap-1 mb-2">
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">L</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">M</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">M</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">J</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">V</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">S</div>
-                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">D</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Lundi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Mardi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Mercredi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Jeudi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Vendredi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Samedi</div>
+                        <div class="calendar-weekday text-center font-semibold text-xs lg:text-sm text-gray-600">Dimanche</div>
                     </div>
                     <div class="calendar-days grid grid-cols-7 gap-1" id="calendarDays"></div>
                 </div>
@@ -482,8 +502,16 @@
             const hasEvent = dayEvents.length > 0;
             
             let classes = 'text-xs lg:text-sm';
-            if (isToday) classes += ' bg-blue-500 text-white font-bold';
-            else if (hasEvent) classes += ' bg-orange-100 text-orange-600 font-semibold';
+
+            //si aujourd hui 
+            if (isToday) classes += ' bg-blue-500  font-semibold';
+
+            //si l evenement et musique
+            else if (hasEvent && dayEvents.some(event => event.category === 'musique')) classes += ' bg-yellow-100 text-yellow-600 font-semibold';
+            //si l evenement et theatre
+            else if (hasEvent && dayEvents.some(event => event.category === 'théâtre')) classes += ' bg-purple-100 text-purple-600 font-semibold';
+            //si l evenement et autres
+            else if (hasEvent && dayEvents.some(event => event.category === 'autres')) classes += ' bg-green-100 text-green-600 font-semibold';
             
             const dayDiv = createDayElement(day, classes, dayEvents);
             calendarDays.appendChild(dayDiv);
@@ -508,20 +536,27 @@
     dayNumber.className = 'font-semibold';
     div.appendChild(dayNumber);
     
-    // Si des événements existent, afficher UN gros point orange
+    // Si des événements existent, afficher UN gros point sous le numéro du jour
     if (dayEvents && dayEvents.length > 0) {
         div.style.cursor = 'pointer';
         div.addEventListener('click', () => showEventModal(dayEvents));
         
         const dot = document.createElement('div');
-        dot.className = 'w-2 h-2 lg:w-4 lg:h-4 bg-orange-500 rounded-full  mx-1 mt-0 border-2 border-black';
+
+        // Déterminer la couleur du point en fonction de la catégorie principale de l'événement
+        const categories = dayEvents.map(event => event.category);
+        if (categories.includes('musique')) {
+            dot.className = 'w-2 h-2 lg:w-4 lg:h-4 bg-yellow-500 rounded-full mx-1 mt-0 border-2 border-black';
+        } else if (categories.includes('théâtre')) {
+            dot.className = 'w-2 h-2 lg:w-4 lg:h-4 bg-purple-500 rounded-full mx-1 mt-0 border-2 border-black';
+        } else if (categories.includes('autres')) {
+            dot.className = 'w-2 h-2 lg:w-4 lg:h-4 bg-green-500 rounded-full mx-1 mt-0 border-2 border-black';
+        } 
+
+        
         div.appendChild(dot);
 
-         // ✅ Ajouter le texte "Cliquer"
-        const clickText = document.createElement('div');
-        clickText.textContent = 'Cliquer';
-        clickText.className = 'text-xs text-orange-600 mt-1 font-medium';
-        div.appendChild(clickText);
+        
     }
     
     return div;
@@ -536,7 +571,7 @@ function showEventModal(dayEvents) {
     
     dayEvents.forEach(event => {
         const eventDiv = document.createElement('div');
-        eventDiv.className = 'mb-4 p-4 bg-orange-50 rounded-lg border border-orange-200 relative';
+        eventDiv.className = 'border-b border-gray-200 pb-4 mb-4 relative';
         
         const title = document.createElement('h3');
         title.className = 'font-semibold text-lg text-gray-800 mb-2';
@@ -559,6 +594,11 @@ function showEventModal(dayEvents) {
             description.textContent = event.description;
             eventDiv.appendChild(description);
         }
+        //afficher la categorie
+        const category = document.createElement('p');
+        category.className = 'text-xs text-gray-500 mt-1';
+        category.textContent = `Catégorie: ${event.category}`;
+        eventDiv.appendChild(category);
 
         // ✅ Bouton supprimer (uniquement pour Admin)
         @if(Auth::check() && Auth::user()->role === 'Admin')
@@ -628,6 +668,49 @@ function showEventModal(dayEvents) {
 
     // Initialiser le calendrier
     renderCalendar();
+</script>
+<script>
+    let quill;
+    
+    document.getElementById('bouton_add_actualite')?.addEventListener('click', () => {
+        const form = document.getElementById('form_actualite');
+        form.classList.toggle('hidden');
+        
+        // Initialiser Quill seulement lors de la première ouverture du formulaire
+        if (!quill && !form.classList.contains('hidden')) {
+            quill = new Quill('#editor-container', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],        // Gras, italique, souligné
+                        ['link'],                                 // Hyperlien
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Listes
+                        ['clean']                                 // Supprimer le formatage
+                    ]
+                },
+                placeholder: 'Écrivez le contenu de l\'actualité...'
+            });
+            
+            // Restaurer l'ancien contenu si présent (validation échouée)
+            const oldContent = `{{ old('contenu') }}`;
+            if (oldContent) {
+                quill.root.innerHTML = oldContent;
+            }
+        }
+    });
+    
+    // Transférer le contenu de Quill vers le champ caché avant soumission
+    document.getElementById('form_actualite')?.addEventListener('submit', function(e) {
+        const contenuHidden = document.getElementById('contenu-hidden');
+        contenuHidden.value = quill.root.innerHTML;
+        
+        // Validation : vérifier que le contenu n'est pas vide
+        if (quill.getText().trim().length === 0) {
+            e.preventDefault();
+            alert('Le contenu est obligatoire');
+            return false;
+        }
+    });
 </script>
 
     </main>

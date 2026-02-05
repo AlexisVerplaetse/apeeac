@@ -17,6 +17,7 @@ class ArchiveController extends Controller
         $archives = Archive::orderBy('annee', 'desc')->get();
         $actualites = Actualite::with('archive')
             ->orderBy('date_publication', 'desc')
+            ->take(6) // <- limite à 6 actualités
             ->get();
         
         return view('pages.accueil', compact('archives', 'actualites'));
@@ -32,9 +33,8 @@ class ArchiveController extends Controller
             abort(403, 'Action non autorisée.');
         }
 
-        // ✅ SÉCURITÉ : Validation stricte
         $validated = $request->validate([
-            'annee' => 'required|integer|min:1900|max:2100|unique:archive,annee'
+        'annee' => 'required|string|max:50'
         ]);
 
         Archive::create(['annee' => $validated['annee']]);
