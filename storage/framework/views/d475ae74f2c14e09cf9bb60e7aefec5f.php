@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'Conservatoire')
 
-@section('content')
+<?php $__env->startSection('title', 'Conservatoire'); ?>
+
+<?php $__env->startSection('content'); ?>
 <section class="hero">
     <h1>Le Conservatoire</h1>
     <p>Conservatoire à Rayonnement Départemental de Valenciennes</p>
@@ -224,4 +224,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\apeeac-main (2)\apeeac-main\resources\views/pages/conservatoire.blade.php ENDPATH**/ ?>

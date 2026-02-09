@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - APEEAC</title>
+    <title><?php echo $__env->yieldContent('title'); ?> - APEEAC</title>
     <!-- Quill CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
      <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    @yield('extra-css')
+    <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>">
+    <?php echo $__env->yieldContent('extra-css'); ?>
 </head>
 <body>
 
     <!-- Navigation -->
-    @include('partials.navigation')
+    <?php echo $__env->make('partials.navigation', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <!-- Contenu principal -->
-    @yield('content')
+    <?php echo $__env->yieldContent('content'); ?>
 
     <!-- Footer -->
-    @include('partials.footer')
+    <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <!-- Bouton retour en haut -->
     <button id="backToTop" aria-label="Retour en haut">↑</button>
@@ -42,6 +42,7 @@
             });
         }
     </script>
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\laragon\www\apeeac-main (2)\apeeac-main\resources\views/layouts/app.blade.php ENDPATH**/ ?>

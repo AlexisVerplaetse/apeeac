@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Accueil'); ?>
 
-@section('title', 'Accueil')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -13,39 +11,41 @@
     <p>Accompagner et soutenir la vie musicale au sein de notre conservatoire</p>
 </section>
 
-@if(Auth::check() && Auth::user()->role === 'Admin')
+<?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
     <div class="max-w-7xl mx-auto px-4 mt-4">
-        <p class="text-gray-700">Bienvenue, {{ Auth::user()->nom }} !</p>
-        <form method="POST" action="{{ route('logout') }}" class="inline">
-            @csrf
+        <p class="text-gray-700">Bienvenue, <?php echo e(Auth::user()->nom); ?> !</p>
+        <form method="POST" action="<?php echo e(route('logout')); ?>" class="inline">
+            <?php echo csrf_field(); ?>
             <button type="submit" class="logout-btn">Déconnexion</button>
         </form>
     </div>
-@endif
+<?php endif; ?>
 
 <!-- Messages de feedback -->
 <div class="max-w-7xl mx-auto px-4 mt-4">
-    @if(session('success'))
+    <?php if(session('success')): ?>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+            <?php echo e(session('success')); ?>
 
-    @if(session('error'))
+        </div>
+    <?php endif; ?>
+
+    <?php if(session('error')): ?>
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
+            <?php echo e(session('error')); ?>
 
-    @if($errors->any())
+        </div>
+    <?php endif; ?>
+
+    <?php if($errors->any()): ?>
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <!-- ================= LAYOUT PRINCIPAL ================= -->
@@ -65,41 +65,42 @@
             </div>
 
             <!-- Liste des archives -->
-            @if($archives->isEmpty())
+            <?php if($archives->isEmpty()): ?>
                 <p class="text-sm text-gray-600">Aucune année enregistrée.</p>
-            @else
+            <?php else: ?>
                 <ul class="space-y-3">
-                    @foreach($archives as $archive)
+                    <?php $__currentLoopData = $archives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $archive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="border-b border-gray-100 pb-3 last:border-0">
-                            <a href="{{ route('actualites.annee', $archive->id) }}"
+                            <a href="<?php echo e(route('actualites.annee', $archive->id)); ?>"
                                class="text-sm lg:text-base font-semibold text-blue-600 hover:text-blue-800 hover:underline block">
-                                📅 {{ $archive->annee }}
+                                📅 <?php echo e($archive->annee); ?>
+
                             </a>
 
-                            @if(Auth::check() && Auth::user()->role === 'Admin')
-                                <form action="{{ route('archive.destroy', $archive->id) }}" method="POST" class="mt-2">
-                                    @csrf
-                                    @method('DELETE')
+                            <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
+                                <form action="<?php echo e(route('archive.destroy', $archive->id)); ?>" method="POST" class="mt-2">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                     <button type="submit"
                                             class="text-xs lg:text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                                             onclick="return confirm('Voulez-vous vraiment supprimer cette année ?')">
                                         Supprimer
                                     </button>
                                 </form>
-                            @endif
+                            <?php endif; ?>
                         </li>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
-            @endif
+            <?php endif; ?>
 
             <!-- Ajouter une année (Admin) -->
-            @if(Auth::check() && Auth::user()->role === 'Admin')
+            <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
                 <button id="bouton_add_annee" class="mt-4 lg:mt-6 w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
                     ➕ Ajouter une année
                 </button>
 
                 <form id="form_archive" action="/archive" method="POST" class="mt-4 hidden">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                     <input type="text" name="annee" placeholder="Ex: 2026"
                            class="border px-3 py-2 rounded w-full mb-2 text-sm lg:text-base" required>
                     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded w-full hover:bg-green-700 text-sm lg:text-base">
@@ -112,7 +113,7 @@
                         document.getElementById('form_archive').classList.toggle('hidden');
                     });
                 </script>
-            @endif
+            <?php endif; ?>
 
         </div>
     </aside>
@@ -121,17 +122,17 @@
 <main class="flex-1 min-w-0">
 
     <!-- Bouton Ajouter une actualité (Admin) -->
-    @if(Auth::check() && Auth::user()->role === 'Admin')
+    <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
         <button id="bouton_add_actualite" class="mb-6 w-full lg:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
             ➕ Ajouter une actualité
         </button>
 
-        <form id="form_actualite" action="{{ route('actualite.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
-            @csrf
+        <form id="form_actualite" action="<?php echo e(route('actualite.store')); ?>" method="POST" enctype="multipart/form-data" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
+            <?php echo csrf_field(); ?>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Titre *</label>
-                <input type="text" name="titre" placeholder="Titre de l'actualité" value="{{ old('titre') }}"
+                <input type="text" name="titre" placeholder="Titre de l'actualité" value="<?php echo e(old('titre')); ?>"
                        class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
             </div>
 
@@ -149,7 +150,7 @@
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Date de publication *</label>
-                <input type="date" name="date_publication" value="{{ old('date_publication') }}"
+                <input type="date" name="date_publication" value="<?php echo e(old('date_publication')); ?>"
                        class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
             </div>
 
@@ -157,11 +158,12 @@
                 <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Année (Archive) *</label>
                 <select name="archive_id" class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
                     <option value="">-- Choisir une année --</option>
-                    @foreach($archives as $archive)
-                        <option value="{{ $archive->id }}" {{ old('archive_id') == $archive->id ? 'selected' : '' }}>
-                            {{ $archive->annee }}
+                    <?php $__currentLoopData = $archives; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $archive): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($archive->id); ?>" <?php echo e(old('archive_id') == $archive->id ? 'selected' : ''); ?>>
+                            <?php echo e($archive->annee); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
 
@@ -176,26 +178,26 @@
                 Publier l'actualité
             </button>
         </form>
-    @endif
+    <?php endif; ?>
 
         <!-- Liste des actualités -->
         <section id="actualites">
             <h2 class="text-xl lg:text-2xl font-bold mb-4 lg:mb-6">📰 Actualités récentes</h2>
             
-            @if($actualites->isEmpty())
+            <?php if($actualites->isEmpty()): ?>
                 <div class="bg-gray-100 rounded-lg p-6 lg:p-8 text-center">
                     <p class="text-gray-600 text-sm lg:text-base">Aucune actualité pour le moment.</p>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-                    @foreach($actualites as $actualite)
+                    <?php $__currentLoopData = $actualites; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $actualite): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <article class="bg-white rounded-xl shadow hover:shadow-lg transition p-4 relative">
                             
                             <!-- Bouton Supprimer (Admin uniquement) -->
-                            @if(Auth::check() && Auth::user()->role === 'Admin')
-                                <form action="{{ route('actualite.destroy', $actualite->id) }}" method="POST" class="absolute top-2 right-2 z-10">
-                                    @csrf
-                                    @method('DELETE')
+                            <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
+                                <form action="<?php echo e(route('actualite.destroy', $actualite->id)); ?>" method="POST" class="absolute top-2 right-2 z-10">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
                                     <button type="submit"
                                             class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 shadow-lg transition"
                                             onclick="return confirm('Voulez-vous vraiment supprimer cette actualité ?')"
@@ -205,55 +207,59 @@
                                         </svg>
                                     </button>
                                 </form>
-                            @endif
+                            <?php endif; ?>
                             
                             <!-- Image ou emoji par défaut -->
-                            @if($actualite->image)
+                            <?php if($actualite->image): ?>
                                 <div class="h-40 lg:h-48 rounded-lg overflow-hidden">
-                                    <img src="{{ asset('storage/' . $actualite->image) }}" 
-                                         alt="{{ $actualite->titre }}"
+                                    <img src="<?php echo e(asset('storage/' . $actualite->image)); ?>" 
+                                         alt="<?php echo e($actualite->titre); ?>"
                                          class="w-full h-full object-cover">
                                 </div>
-                            @else
+                            <?php else: ?>
                                 <div class="h-40 lg:h-48 bg-gradient-to-r from-blue-400 to-pink-400 rounded-lg flex items-center justify-center text-4xl lg:text-5xl">
                                     🎵
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             
                             <div class="mt-3 lg:mt-4">
                                 <!-- Date et année -->
                                 <div class="flex items-center justify-between mb-2">
                                     <p class="text-xs lg:text-sm text-gray-500">
-                                        {{ \Carbon\Carbon::parse($actualite->date_publication)->translatedFormat('d F Y') }}
+                                        <?php echo e(\Carbon\Carbon::parse($actualite->date_publication)->translatedFormat('d F Y')); ?>
+
                                     </p>
-                                    @if($actualite->archive)
+                                    <?php if($actualite->archive): ?>
                                         <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded font-medium">
-                                            {{ $actualite->archive->annee }}
+                                            <?php echo e($actualite->archive->annee); ?>
+
                                         </span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                                 
                                 <!-- Titre -->
                                 <h3 class="text-base lg:text-lg font-semibold mt-2 text-gray-800 line-clamp-2">
-                                    {{ $actualite->titre }}
+                                    <?php echo e($actualite->titre); ?>
+
                                 </h3>
                                 
                                 <!-- Contenu (extrait) -->
                                 <p class="text-sm lg:text-base text-gray-600 mt-2 line-clamp-3">
-                                    {!! $actualite->contenu !!}
+                                    <?php echo $actualite->contenu; ?>
+
                                 </p>
                                 
                                 <!-- Lien "Lire la suite" -->
                                 <button 
                                    class="text-orange-500 font-semibold mt-3 inline-block hover:text-orange-600 transition text-sm lg:text-base"
-                                   onclick="afficherActualite({{ $actualite->id }})">
+                                   onclick="afficherActualite(<?php echo e($actualite->id); ?>)">
                                     Lire la suite →
                                 </button>
                             </div>
                         </article>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-            @endif
+            <?php endif; ?>
         </section>
 
         <!-- Modal pour afficher l'actualité complète -->
@@ -275,7 +281,7 @@
 
         <script>
             // Données des actualités en JSON
-            const actualites = @json($actualites);
+            const actualites = <?php echo json_encode($actualites, 15, 512) ?>;
             
             function afficherActualite(id) {
                 const actualite = actualites.find(a => a.id === id);
@@ -343,29 +349,29 @@
                 </div>
 
                          <!-- Bouton Ajouter un evenement (Admin) -->
-                @if(Auth::check() && Auth::user()->role === 'Admin')
+                <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
                     <button id="bouton_add_evenement" class="mb-6 w-full lg:w-auto bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm lg:text-base">
                         ➕ Ajouter un événement
                     </button>
 
-                    <form id="form_evenement" action="{{ route('evenements') }}" method="POST" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
-                        @csrf
+                    <form id="form_evenement" action="<?php echo e(route('evenements')); ?>" method="POST" class="mb-6 hidden bg-white p-4 lg:p-6 rounded-lg shadow">
+                        <?php echo csrf_field(); ?>
 
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Titre *</label>
-                            <input type="text" name="title" placeholder="Titre de l'événement" value="{{ old('title') }}"
+                            <input type="text" name="title" placeholder="Titre de l'événement" value="<?php echo e(old('title')); ?>"
                                    class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Description</label>
                             <textarea name="description" placeholder="Description de l'événement"
-                                      class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" rows="3">{{ old('description') }}</textarea>
+                                      class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" rows="3"><?php echo e(old('description')); ?></textarea>
                         </div>
                         
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Date de l'événement *</label>
-                            <input type="date" name="event_date" value="{{ old('event_date') }}"
+                            <input type="date" name="event_date" value="<?php echo e(old('event_date')); ?>"
                                    class="border border-gray-300 px-3 py-2 rounded w-full text-sm lg:text-base focus:outline-none focus:ring-2 focus:ring-green-500" required>
                         </div>
 
@@ -388,7 +394,7 @@
                             document.getElementById('form_evenement').classList.toggle('hidden');
                         });</script>
 
-                @endif
+                <?php endif; ?>
                 <div class="calendar-legend flex flex-wrap gap-4 mt-4 text-xs lg:text-sm">
                     <div class="legend-item flex items-center gap-2">
                         <div class="legend-dot w-3 h-3 lg:w-4 lg:h-4 bg-blue-500 rounded-full"></div>
@@ -601,7 +607,7 @@ function showEventModal(dayEvents) {
         eventDiv.appendChild(category);
 
         // ✅ Bouton supprimer (uniquement pour Admin)
-        @if(Auth::check() && Auth::user()->role === 'Admin')
+        <?php if(Auth::check() && Auth::user()->role === 'Admin'): ?>
             const deleteForm = document.createElement('form');
             deleteForm.action = `/evenements/${event.id}`;
             deleteForm.method = 'POST';
@@ -613,7 +619,7 @@ function showEventModal(dayEvents) {
             const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
-            csrfInput.value = '{{ csrf_token() }}';
+            csrfInput.value = '<?php echo e(csrf_token()); ?>';
             
             const methodInput = document.createElement('input');
             methodInput.type = 'hidden';
@@ -632,7 +638,7 @@ function showEventModal(dayEvents) {
             deleteForm.appendChild(methodInput);
             deleteForm.appendChild(deleteButton);
             eventDiv.appendChild(deleteForm);
-        @endif
+        <?php endif; ?>
         
         eventList.appendChild(eventDiv);
     });
@@ -692,7 +698,7 @@ function showEventModal(dayEvents) {
             });
             
             // Restaurer l'ancien contenu si présent (validation échouée)
-            const oldContent = `{{ old('contenu') }}`;
+            const oldContent = `<?php echo e(old('contenu')); ?>`;
             if (oldContent) {
                 quill.root.innerHTML = oldContent;
             }
@@ -716,4 +722,5 @@ function showEventModal(dayEvents) {
     </main>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\apeeac-main (2)\apeeac-main\resources\views/pages/accueil.blade.php ENDPATH**/ ?>

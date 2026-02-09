@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Espace Administratif - APEEAC'); ?>
 
-@section('title', 'Espace Administratif - APEEAC')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <section class="hero">
     <h1>Espace Administratif</h1>
     <p>Documents et informations pour les membres du bureau</p>
@@ -355,4 +353,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\apeeac-main (2)\apeeac-main\resources\views/pages/administratif.blade.php ENDPATH**/ ?>
